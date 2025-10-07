@@ -1,0 +1,15 @@
+[submodule "pic-sure"]
+	path = pic-sure
+	url = https://github.com/hms-dbmi/pic-sure.git
+[submodule "pic-sure-auth-microapp"]
+	path = pic-sure-auth-microapp
+	url = https://github.com/hms-dbmi/pic-sure-auth-microapp.git
+[submodule "PIC-SURE-Frontend"]
+	path = PIC-SURE-Frontend
+	url = https://github.com/hms-dbmi/PIC-SURE-Frontend.git
+[submodule "pic-sure-hpds"]
+	path = pic-sure-hpds
+	url = https://github.com/hms-dbmi/pic-sure-hpds.git
+[submodule "picsure-dictionary"]
+	path = picsure-dictionary
+	url = https://github.com/hms-dbmi/picsure-dictionary.git
