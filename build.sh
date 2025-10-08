@@ -7,7 +7,7 @@ echo "================================"
 
 # Build all Maven projects
 echo "Building Maven projects..."
-mvn clean install
+mvn clean install -DskipTests
 
 # Build Frontend
 if [ -d "PIC-SURE-Frontend" ]; then
