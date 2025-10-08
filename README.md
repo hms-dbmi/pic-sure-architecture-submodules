@@ -32,19 +32,16 @@ This repository provides centralized management for:
 ### First Time Setup
 
 Clone the repository with all submodules:
-```
-bash
+```bash
 git clone --recurse-submodules <repository-url>
 cd pic-sure-application-stack
 ```
 If you already cloned without submodules:
-```
-bash
+```bash
 git submodule update --init --recursive
 ```
 ### Build All Components
-```
-bash
+```bash
 ./build.sh
 ```
 This will:
@@ -59,15 +56,13 @@ This will:
 Each submodule is pinned to a specific commit in the parent repository. This ensures reproducible builds across environments.
 
 View current submodule versions:
-```
-bash
+```bash
 git submodule status
 ```
 ### Updating Component Versions
 
 To update a specific component to a new version:
-```
-bash
+```bash
 # Navigate to the submodule
 cd pic-sure
 
@@ -86,8 +81,7 @@ git push
 ### Pulling Version Updates
 
 When someone else updates submodule versions:
-```
-bash
+```bash
 git pull
 git submodule update --recursive
 ```
@@ -96,8 +90,7 @@ git submodule update --recursive
 ### Multiple Environments via Branches
 
 Manage different environment configurations using Git branches:
-```
-bash
+```bash
 # Production environment
 git checkout production
 git submodule update --recursive
@@ -120,25 +113,21 @@ Each branch can track different versions of each component, making it easy to pr
 ### Build Specific Components
 
 Build only Maven projects:
-```
-bash
+```bash
 mvn clean install
 ```
 Build a specific Maven module:
-```
-bash
+```bash
 mvn clean install -pl pic-sure-hpds
 ```
 Build with Maven options:
-```
-bash
+```bash
 mvn clean install -DskipTests
 ```
 ### Update Submodules to Latest
 
 Update all submodules to the latest commit on their tracked branch:
-```
-bash
+```bash
 git submodule update --remote
 git add .
 git commit -m "Update all submodules to latest"
@@ -146,8 +135,7 @@ git commit -m "Update all submodules to latest"
 ### Working on Submodule Development
 
 To make changes within a submodule:
-```
-bash
+```bash
 cd pic-sure
 git checkout -b feature/my-feature
 # Make changes, commit, push to submodule repository
@@ -184,8 +172,7 @@ No code changes required when migrating between platforms. Simply update the URL
 ## Troubleshooting
 
 ### Submodules are empty after clone
-```
-bash
+```bash
 git submodule update --init --recursive
 ```
 ### Submodules are on detached HEAD
@@ -195,15 +182,13 @@ This is normal. Submodules are pinned to specific commits. To work on a submodul
 ### Build fails due to version mismatch
 
 Ensure submodules are updated:
-```
-bash
+```bash
 git submodule update --recursive
 ```
 ### Changes in submodule not reflected
 
 After making changes in a submodule:
-```
-bash
+```bash
 cd <submodule-directory>
 git add .
 git commit -m "Changes"
