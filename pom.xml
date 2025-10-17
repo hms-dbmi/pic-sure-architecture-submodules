@@ -21,7 +21,29 @@
         <module>picsure-dictionary</module>
     </modules>
 
-    <!-- Enforce compiler plugin version -->
+    <!-- Where to deploy artifacts -->
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <url>${maven.releases.repo}</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>${maven.snapshots.repo}</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <properties>
+        <!-- Java Versioning -->
+        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+
+        <!-- Nexus Repos -->
+        <maven.releases.repo>http://localhost:8081/repository/maven-releases/</maven.releases.repo>
+        <maven.snapshots.repo>http://localhost:8081/repository/maven-snapshots/</maven.snapshots.repo>
+    </properties>
+
     <build>
         <pluginManagement>
             <plugins>

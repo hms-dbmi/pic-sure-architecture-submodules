@@ -1,13 +1,7 @@
 # PIC-SURE Application Stack Makefile
 # Centralized version and build management
 
-# Define versions for each component
-PIC_SURE_VERSION := v2.20.4
-PIC_SURE_AUTH_VERSION := v3.6.7
-PIC_SURE_FRONTEND_VERSION := v2.1.2
-PIC_SURE_HPDS_VERSION := v4.7.7
-PICSURE_DICTIONARY_VERSION := v1.4.8
-
+ca
 .PHONY: help init update-versions checkout-versions build clean status
 
 help:
@@ -147,3 +141,50 @@ status:
 	@echo "=========================================="
 	@echo ""
 	@echo "Tip: Run 'make checkout-versions' to align current with staged versions"
+
+stash:
+	@echo "Stashing changes in main repo and submodules..."
+	@git stash push -u -m "Stash from make: $$(date '+%Y-%m-%d %H:%M:%S')"
+	@git submodule foreach 'git stash push -u -m "Stash from make: $$(date +%Y-%m-%d\ %H:%M:%S)" || true'
+	@echo "All changes stashed!"
+
+.PHONY: nexus-start nexus-stop deploy-nexus
+
+# Start Nexus container
+nexus-start:
+	@echo "Starting Nexus Repository Manager..."
+	docker-compose -f docker-compose.nexus.yml up -d
+	@echo ""
+	@echo "Nexus is starting (takes ~2 minutes)..."
+	@echo "Access at: http://localhost:8081"
+	@echo ""
+	@echo "To get initial admin password:"
+	@echo "  docker exec picsure-nexus cat /nexus-data/admin.password"
+
+# Stop Nexus container
+nexus-stop:
+	@echo "Stopping Nexus..."
+	docker-compose -f docker-compose.nexus.yml down
+
+# Deploy artifacts to Nexus (override submodule distribution management)
+deploy-nexus: build
+	@if ! docker ps | grep -q picsure-nexus; then \
+		echo "ERROR: Nexus is not running. Start it with 'make nexus-start'"; \
+		exit 1; \
+	fi
+	@if [ ! -f .env ]; then \
+		echo "ERROR: .env file not found. Create it with your Nexus credentials."; \
+		exit 1; \
+	fi
+	@echo "Deploying artifacts to Nexus..."
+	@echo "Loading credentials from .env..."
+	@set -a && . ./.env && set +a && \
+	mvn deploy -s maven-settings.xml -DskipTests \
+		-DaltSnapshotDeploymentRepository=nexus-snapshots::default::http://localhost:8081/repository/maven-snapshots/ \
+		-DaltReleaseDeploymentRepository=nexus-releases::default::http://localhost:8081/repository/maven-releases/
+	@echo ""
+	@echo "=========================================="
+	@echo "Artifacts deployed to Nexus!"
+	@echo "=========================================="
+	@echo "View at: http://localhost:8081"
+	@echo "Browse: maven-snapshots repository"
